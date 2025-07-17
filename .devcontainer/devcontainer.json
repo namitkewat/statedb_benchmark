@@ -1,0 +1,35 @@
+{
+	// A friendly name for your development container.
+	"name": "statedb_benchmark",
+	// Configure the container from a Dockerfile.
+	"build": {
+		// Points to the Dockerfile in the parent directory (your project root).
+		"dockerfile": "../Dockerfile",
+		// Sets the build context to your project root.
+		"context": ".."
+	},
+	// Mounts the local project folder into the container.
+	"mounts": [
+		"source=${localWorkspaceFolder},target=/workspaces/statedb,type=bind,consistency=cached"
+	],
+	// The folder to open inside the container.
+	"workspaceFolder": "/workspaces/statedb_benchmark",
+	// Commands to run after the container is created.
+	"postCreateCommand": "git submodule update --init --recursive && pip3 install pytest redis",
+	// VS Code settings to apply inside the container.
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.shell.linux": "/bin/bash"
+			},
+			"extensions": [
+				"ziglang.vscode-zig", // Zig language support
+				"ms-python.python", // Python language support
+				"oven.bun-vscode" // Bun support
+			]
+		}
+	},
+	// Run as the root user. For development, this is often simpler.
+	// For production, you would create a non-root user.
+	"remoteUser": "root"
+}
